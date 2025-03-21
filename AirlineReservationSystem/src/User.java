@@ -5,6 +5,7 @@
  */
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -17,23 +18,25 @@ public class User {
      * 2D Array to store admin credentials. Default credentials are stored on [0][0]
      * index. Max num of admins can be 10....
      */
-    static String[][] adminUserNameAndPassword = new String[10][2];
+    private static final String defaultAdminUserName="root";
+    private static final String defaultAdminPass="root";
     private static List<Customer> customersCollection = new ArrayList<>();
-
+    static HashMap<String,String>adminUserNameAndPassword=new HashMap<>();
+    static int countNumOfUsers = 1;
     // ************************************************************
     // Behaviours/Methods
     // ************************************************************
 
     public static void main(String[] args) {
-        int countNumOfUsers = 1;
+
         RolesAndPermissions r1 = new RolesAndPermissions();
         Flight f1 = new Flight();
         FlightReservation bookingAndReserving = new FlightReservation();
         Customer c1 = new Customer();
         f1.flightScheduler();
         Scanner read = new Scanner(System.in);
+        adminUserNameAndPassword.put(defaultAdminUserName, defaultAdminPass);
 
-       
         System.out.println(
                 "\n\t\t\t\t\t+++++++++++++ Welcome to BAV AirLines +++++++++++++\n\nTo Further Proceed, Please enter a value.");
         System.out.println(
@@ -47,155 +50,14 @@ public class User {
 
         do {
             Scanner read1 = new Scanner(System.in);
-            /*
-             * If desiredOption is 1 then call the login method.... if default credentials
-             * are used then set the permission
-             * level to standard/default where the user can just view the customer's
-             * data...if not found, then return -1, and if
-             * data is found then show the user display menu for adding, updating, deleting
-             * and searching users/customers...
-             */
             if (desiredOption == 1) {
-
-                /* Default username and password.... */
-                adminUserNameAndPassword[0][0] = "root";
-                adminUserNameAndPassword[0][1] = "root";
-                
-                System.out.print("\nEnter the UserName to login to the Management System :     ");
-                String username = read1.nextLine();
-                System.out.print("Enter the Password to login to the Management System :    ");
-                String password = read1.nextLine();
-                System.out.println();
-
-                /* Checking the RolesAndPermissions...... */
-                if (r1.isPrivilegedUserOrNot(username, password) == -1) {
-                    System.out.printf(
-                            "\n%20sERROR!!! Unable to login Cannot find user with the entered credentials.... Try Creating New Credentials or get yourself register by pressing 4....\n",
-                            "");
-                } else if (r1.isPrivilegedUserOrNot(username, password) == 0) {
-                    System.out.println(
-                            "You've standard/default privileges to access the data... You can just view customers data..."
-                                    + "Can't perform any actions on them....");
-                    c1.displayCustomersData(true);
-                } else {
-                    System.out.printf(
-                            "%-20sLogged in Successfully as \"%s\"..... For further Proceedings, enter a value from below....",
-                            "", username);
-
-                    /*
-                     * Going to Display the CRUD operations to be performed by the privileged
-                     * user.....Which includes Creating, Updating
-                     * Reading(Searching) and deleting a customer....
-                     */
-                    do {
-                        AdminDashboard adminDashboard=new AdminDashboard(username,c1,f1,customersCollection,bookingAndReserving);
-                        adminDashboard.showOptions();
-                        desiredOption = read.nextInt();
-                        desiredOption=adminDashboard.executeOptions(desiredOption);
-                    } while (desiredOption != 0);
-
-                }
+                handleAdminLogin(c1,f1,r1,bookingAndReserving);
             }
             else if (desiredOption == 2) {
-                /*
-                 * If desiredOption is 2, then call the registration method to register a
-                 * user......
-                 */
-                System.out.print("\nEnter the UserName to Register :    ");
-                String username = read1.nextLine();
-                System.out.print("Enter the Password to Register :     ");
-                String password = read1.nextLine();
-                while (r1.isPrivilegedUserOrNot(username, password) != -1) {
-                    System.out.print("ERROR!!! Admin with same UserName already exist. Enter new UserName:   ");
-                    username = read1.nextLine();
-                    System.out.print("Enter the Password Again:   ");
-                    password = read1.nextLine();
-                }
-
-                /* Setting the credentials entered by the user..... */
-                adminUserNameAndPassword[countNumOfUsers][0] = username;
-                adminUserNameAndPassword[countNumOfUsers][1] = password;
-
-                /* Incrementing the numOfUsers */
-                countNumOfUsers++;
+                handleAdminResister(r1);
             }
             else if (desiredOption == 3) {
-                System.out.print("\n\nEnter the Email to Login : \t");
-                String userName = read1.nextLine();
-                System.out.print("Enter the Password : \t");
-                String password = read1.nextLine();
-                String[] result = r1.isPassengerRegistered(userName, password).split("-");
-
-                if (Integer.parseInt(result[0]) == 1) {
-                    int desiredChoice;
-                    System.out.printf(
-                            "\n\n%-20sLogged in Successfully as \"%s\"..... For further Proceedings, enter a value from below....",
-                            "", userName);
-                    do {
-                        System.out.printf("\n\n%-60s+++++++++ 3rd Layer Menu +++++++++%50sLogged in as \"%s\"\n", "",
-                                "", userName);
-                        System.out.printf("%-40s (a) Enter 1 to Book a flight....\n", "");
-                        System.out.printf("%-40s (b) Enter 2 to update your Data....\n", "");
-                        System.out.printf("%-40s (c) Enter 3 to delete your account....\n", "");
-                        System.out.printf("%-40s (d) Enter 4 to Display Flight Schedule....\n", "");
-                        System.out.printf("%-40s (e) Enter 5 to Cancel a Flight....\n", "");
-                        System.out.printf("%-40s (f) Enter 6 to Display all flights registered by \"%s\"....\n", "",
-                                userName);
-                        System.out.printf("%-40s (g) Enter 0 to Go back to the Main Menu/Logout....\n", "");
-                        System.out.print("Enter the desired Choice :   ");
-                        desiredChoice = read.nextInt();
-                        if (desiredChoice == 1) {
-                            // bookingAndReserving.displayArtWork(1);
-                            f1.displayFlightSchedule();
-                            System.out.print("\nEnter the desired flight number to book :\t ");
-                            String flightToBeBooked = read1.nextLine();
-                            System.out.print("Enter the Number of tickets for " + flightToBeBooked + " flight :   ");
-                            int numOfTickets = read.nextInt();
-                            while (numOfTickets > 10) {
-                                System.out.print(
-                                        "ERROR!! You can't book more than 10 tickets at a time for single flight....Enter number of tickets again : ");
-                                numOfTickets = read.nextInt();
-                            }
-                            bookingAndReserving.bookFlight(flightToBeBooked, numOfTickets, result[1]);
-                        } else if (desiredChoice == 2) {
-
-                            c1.editUserInfo(result[1]);
-                        } else if (desiredChoice == 3) {
-                            System.out.print(
-                                    "Are you sure to delete your account...It's an irreversible action...Enter Y/y to confirm...");
-                            char confirmationChar = read1.nextLine().charAt(0);
-                            if (confirmationChar == 'Y' || confirmationChar == 'y') {
-                                c1.deleteUser(result[1]);
-                                System.out.printf("User %s's account deleted Successfully...!!!", userName);
-                                desiredChoice = 0;
-                            } else {
-                                System.out.println("Action has been cancelled...");
-                            }
-                        } else if (desiredChoice == 4) {
-
-                            f1.displayFlightSchedule();
-                            f1.displayMeasurementInstructions();
-                        } else if (desiredChoice == 5) {
-
-                            bookingAndReserving.cancelFlight(result[1]);
-                        } else if (desiredChoice == 6) {
-
-                            bookingAndReserving.displayFlightsRegisteredByOneUser(result[1]);
-                        } else {
-
-                            if (desiredChoice != 0) {
-                                System.out.println(
-                                        "Invalid Choice...Looks like you're Robot...Entering values randomly...You've Have to login again...");
-                            }
-                            desiredChoice = 0;
-                        }
-                    } while (desiredChoice != 0);
-
-                } else {
-                    System.out.printf(
-                            "\n%20sERROR!!! Unable to login Cannot find user with the entered credentials.... Try Creating New Credentials or get yourself register by pressing 4....\n",
-                            "");
-                }
+                handleCustomerLogin(read1, r1, read, f1, bookingAndReserving, c1);
             }
             else if (desiredOption == 4) {
                 c1.addNewCustomer();
@@ -214,7 +76,33 @@ public class User {
 
     }
 
-    static void displayMainMenu() {
+    private static void handleCustomerLogin(Scanner read1, RolesAndPermissions r1, Scanner read, Flight f1, FlightReservation bookingAndReserving, Customer c1) {
+        System.out.print("\n\nEnter the Email to Login : \t");
+        String userName = read1.nextLine();
+        System.out.print("Enter the Password : \t");
+        String password = read1.nextLine();
+        String[] result = r1.isPassengerRegistered(userName, password).split("-");
+
+        if (Integer.parseInt(result[0]) == 1) {
+            int desiredChoice;
+            System.out.printf(
+                    "\n\n%-20sLogged in Successfully as \"%s\"..... For further Proceedings, enter a value from below....",
+                    "", userName);
+            do {
+                CustomerDashboard customerDashboard = new CustomerDashboard();
+                customerDashboard.DisplayOption(userName);
+                desiredChoice = read.nextInt();
+                desiredChoice = customerDashboard.getDesiredChoice(desiredChoice, f1, bookingAndReserving, result, c1, userName);
+            } while (desiredChoice != 0);
+
+        } else {
+            System.out.printf(
+                    "\n%20sERROR!!! Unable to login Cannot find user with the entered credentials.... Try Creating New Credentials or get yourself register by pressing 4....\n",
+                    "");
+        }
+    }
+
+         static void displayMainMenu() {
         System.out.println("\n\n\t\t(a) Press 0 to Exit.");
         System.out.println("\t\t(b) Press 1 to Login as admin.");
         System.out.println("\t\t(c) Press 2 to Register as admin.");
@@ -224,7 +112,7 @@ public class User {
         System.out.print("\t\tEnter the desired option:    ");
     }
 
-    static void manualInstructions() {
+         static void manualInstructions() {
         Scanner read = new Scanner(System.in);
         System.out.printf("%n%n%50s %s Welcome to BAV Airlines User Manual %s", "", "+++++++++++++++++",
                 "+++++++++++++++++");
@@ -236,7 +124,84 @@ public class User {
             System.out.print("ERROR!!! Invalid entry...Please enter a value either 1 or 2....Enter again....");
             choice = read.nextInt();
         }
-        if (choice == 1) {
+        switch (choice) {
+            case 1:
+                adminManual();
+                break;
+            case 2:
+                userManual();
+                break;
+        }
+    }
+         private static void handleAdminLogin (Customer c1 ,Flight f1,RolesAndPermissions r1,FlightReservation bookingAndReserving) {
+        Scanner read=new Scanner(System.in);
+        int desiredOption;
+        System.out.print("\nEnter the UserName to login to the Management System :     ");
+        String username = read.nextLine();
+        System.out.print("Enter the Password to login to the Management System :    ");
+        String password = read.nextLine();
+        System.out.println();
+
+        /* Checking the RolesAndPermissions...... */
+        if (r1.isPrivilegedUserOrNot(username, password)==-1) {
+            System.out.printf(
+                    "\n%20sERROR!!! Unable to login Cannot find user with the entered credentials.... Try Creating New Credentials or get yourself register by pressing 4....\n",
+                    "");
+        } else if (r1.isPrivilegedUserOrNot(username, password)==0) {
+            System.out.println(
+                    "You've standard/default privileges to access the data... You can just view customers data..."
+                            + "Can't perform any actions on them....");
+            c1.displayCustomersData(true);
+        } else {
+            System.out.printf(
+                    "%-20sLogged in Successfully as \"%s\"..... For further Proceedings, enter a value from below....",
+                    "", username);
+
+            /*
+             * Going to Display the CRUD operations to be performed by the privileged
+             * user.....Which includes Creating, Updating
+             * Reading(Searching) and deleting a customer....
+             */
+            do {
+                AdminDashboard adminDashboard=new AdminDashboard(username,c1,f1,customersCollection,bookingAndReserving);
+                adminDashboard.showOptions();
+                desiredOption = read.nextInt();
+                desiredOption=adminDashboard.executeOptions(desiredOption);
+            } while (desiredOption != 0);
+
+        }
+    }
+         private static void handleAdminResister(RolesAndPermissions r1){
+        /*
+         * If desiredOption is 2, then call the registration method to register a
+         * user......
+         */
+        Scanner read=new Scanner(System.in);
+        System.out.print("\nEnter the UserName to Register :    ");
+        String username = read.nextLine();
+        System.out.print("Enter the Password to Register :     ");
+        String password = read.nextLine();
+        while (r1.isPrivilegedUserOrNot(username, password) != -1) {
+            System.out.print("ERROR!!! Admin with same UserName already exist. Enter new UserName:   ");
+            username = read.nextLine();
+            System.out.print("Enter the Password Again:   ");
+            password = read.nextLine();
+        }
+
+        /* Setting the credentials entered by the user..... */
+        adminUserNameAndPassword.put(username, password);
+
+        /* Incrementing the numOfUsers */
+        countNumOfUsers++;
+    }
+
+        // ************************************************************ Setters &
+        // Getters ************************************************************
+
+        public static List<Customer> getCustomersCollection(){
+            return customersCollection;
+        }
+        private static void adminManual () {
             System.out.println(
                     "\n\n(1) Admin have the access to all users data...Admin can delete, update, add and can perform search for any customer...\n");
             System.out.println(
@@ -259,33 +224,19 @@ public class User {
                     "(11) Pressing \"7\" will let you delete any flight given its flight number provided...\n");
             System.out.println(
                     "(11) Pressing \"0\" will make you logged out of the program...You can login again any time you want during the program execution....\n");
-        } else {
-            System.out.println(
-                    "\n\n(1) Local user has the access to its data only...He/She won't be able to change/update other users data...\n");
-            System.out.println(
-                    "(2) In order to access local users benefits, you've to get yourself register by pressing 4, when the main menu gets displayed...\n");
-            System.out.println(
-                    "(3) Provide the details asked by the program to add you to the users list...Once you've registered yourself, press \"3\" to login as a passenger...\n");
-            System.out.println(
-                    "(4) Once you've logged in, 3rd layer menu will be displayed...From here on, you embarked on the journey to fly with us...\n");
-            System.out.println(
-                    "(5) Pressing \"1\" will display available/scheduled list of flights...To get yourself booked for a flight, enter the flight number and number of tickets for the flight...Max num of tickets at a time is 10 ...\n");
-            System.out.println(
-                    "(7) Pressing \"2\" will let you update your own data...You won't be able to update other's data... \n");
+
+        }
+        private static void userManual() {
+            System.out.println("\n\n(1) Local user has the access to its data only...He/She won't be able to change/update other users data...\n");
+            System.out.println("(2) In order to access local users benefits, you've to get yourself register by pressing 4, when the main menu gets displayed...\n");
+            System.out.println("(3) Provide the details asked by the program to add you to the users list...Once you've registered yourself, press \"3\" to login as a passenger...\n");
+            System.out.println("(4) Once you've logged in, 3rd layer menu will be displayed...From here on, you embarked on the journey to fly with us...\n");
+            System.out.println("(5) Pressing \"1\" will display available/scheduled list of flights...To get yourself booked for a flight, enter the flight number and number of tickets for the flight...Max num of tickets at a time is 10 ...\n");
+            System.out.println("(7) Pressing \"2\" will let you update your own data...You won't be able to update other's data... \n");
             System.out.println("(8) Pressing \"3\" will delete your account... \n");
-            System.out
-                    .println("(9) Pressing \"4\" will display randomly designed flight schedule for this runtime...\n");
+            System.out.println("(9) Pressing \"4\" will display randomly designed flight schedule for this runtime...\n");
             System.out.println("(10) Pressing \"5\" will let you cancel any flight registered by you...\n");
             System.out.println("(11) Pressing \"6\" will display all flights registered by you...\n");
-            System.out.println(
-                    "(12) Pressing \"0\" will make you logout of the program...You can login back at anytime with your credentials...for this particular run-time... \n");
+            System.out.println("(12) Pressing \"0\" will make you logout of the program...You can login back at anytime with your credentials...for this particular run-time... \n");
         }
     }
-
-    // ************************************************************ Setters &
-    // Getters ************************************************************
-
-    public static List<Customer> getCustomersCollection() {
-        return customersCollection;
-    }
-}

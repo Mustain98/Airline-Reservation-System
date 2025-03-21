@@ -95,10 +95,10 @@ public class AdminDashboard {
 
     private void displayPassengersByFlight() {
         System.out.print("Display passengers for all flights? (Y/N): ");
-        char choice = scanner.nextLine().charAt(0);
-        if (choice == 'Y' || choice == 'y') {
+        char choice = Character.toLowerCase(scanner.nextLine().charAt(0));
+        if (choice=='y') {
             bookingAndReserving.displayRegisteredUsersForAllFlight();
-        } else if (choice == 'N' || choice == 'n') {
+        } else if (choice =='n') {
             f1.displayFlightSchedule();
             System.out.print("Enter Flight Number: ");
             String flightNum = scanner.nextLine();

@@ -68,7 +68,7 @@ public class Customer {
         String name = read.nextLine();
         System.out.print("Enter your email address :\t");
         String email = read.nextLine();
-        while (isUniqueData(email)) {
+        while (!isUniqueData(email)) {
             System.out.println(
                     "ERROR!!! User with the same email already exists... Use new email or login using the previous credentials....");
             System.out.print("Enter your email address :\t");
@@ -132,10 +132,10 @@ public class Customer {
      * @param emailID to be checked in the list
      */
     public boolean isUniqueData(String emailID) {
-        boolean isUnique = false;
+        boolean isUnique = true;
         for (Customer c : customerCollection) {
             if (emailID.equals(c.getEmail())) {
-                isUnique = true;
+                isUnique = false;
                 break;
             }
         }
