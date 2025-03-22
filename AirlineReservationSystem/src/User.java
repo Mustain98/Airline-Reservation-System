@@ -30,10 +30,9 @@ public class User {
     public static void main(String[] args) {
 
         RolesAndPermissions r1 = new RolesAndPermissions();
-        Flight f1 = new Flight();
+        FlightManager f1 = new FlightManager();
         FlightReservation bookingAndReserving = new FlightReservation();
         Customer c1 = new Customer();
-        f1.flightScheduler();
         Scanner read = new Scanner(System.in);
         adminUserNameAndPassword.put(defaultAdminUserName, defaultAdminPass);
 
@@ -76,7 +75,7 @@ public class User {
 
     }
 
-    private static void handleCustomerLogin(Scanner read1, RolesAndPermissions r1, Scanner read, Flight f1, FlightReservation bookingAndReserving, Customer c1) {
+        private static void handleCustomerLogin(Scanner read1, RolesAndPermissions r1, Scanner read, FlightManager f1, FlightReservation bookingAndReserving, Customer c1) {
         System.out.print("\n\nEnter the Email to Login : \t");
         String userName = read1.nextLine();
         System.out.print("Enter the Password : \t");
@@ -133,7 +132,7 @@ public class User {
                 break;
         }
     }
-         private static void handleAdminLogin (Customer c1 ,Flight f1,RolesAndPermissions r1,FlightReservation bookingAndReserving) {
+         private static void handleAdminLogin (Customer c1 ,FlightManager f1,RolesAndPermissions r1,FlightReservation bookingAndReserving) {
         Scanner read=new Scanner(System.in);
         int desiredOption;
         System.out.print("\nEnter the UserName to login to the Management System :     ");

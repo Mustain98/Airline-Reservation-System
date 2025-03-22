@@ -14,7 +14,7 @@ public class CustomerDashboard {
         System.out.printf("%-40s (g) Enter 0 to Go back to the Main Menu/Logout....\n", "");
         System.out.print("Enter the desired Choice :   ");
     }
-    public int getDesiredChoice(int desiredChoice, Flight f1, FlightReservation bookingAndReserving, String[] result, Customer c1, String userName) {
+    public int getDesiredChoice(int desiredChoice, FlightManager f1, FlightReservation bookingAndReserving, String[] result, Customer c1, String userName) {
         Scanner read = new Scanner(System.in);
         if (desiredChoice == 1) {
             f1.displayFlightSchedule();

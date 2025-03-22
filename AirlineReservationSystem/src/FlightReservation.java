@@ -12,7 +12,7 @@ import java.util.Scanner;
 public class FlightReservation implements DisplayClass {
 
     //        ************************************************************ Fields ************************************************************
-    Flight flight = new Flight();
+    FlightManager flightManager = new FlightManager();
     int flightIndexInFlightList;
 
     //        ************************************************************ Behaviours/Methods ************************************************************
@@ -30,7 +30,7 @@ public class FlightReservation implements DisplayClass {
      */
     void bookFlight(String flightNo, int numOfTickets, String userID) {
         boolean isFound = false;
-        for (Flight f1 : flight.getFlightList()) {
+        for (Flight f1 : flightManager.flightList) {
             if (flightNo.equalsIgnoreCase(f1.getFlightNumber())) {
                 for (Customer customer : Customer.customerCollection) {
                     if (userID.equals(customer.getUserID())) {
@@ -41,8 +41,9 @@ public class FlightReservation implements DisplayClass {
                         }
                         if (isFlightAlreadyAddedToCustomerList(customer.flightsRegisteredByUser, f1)) {
                             addNumberOfTicketsToAlreadyBookedFlight(customer, numOfTickets);
-                            if (flightIndex(flight.getFlightList(), flight) != -1) {
-                                customer.addExistingFlightToCustomerList(flightIndex(flight.getFlightList(), flight), numOfTickets);
+                            List<Flight> flightList = flightManager.flightList;
+                            if (flightIndex(flightList, f1) != -1) {
+                                customer.addExistingFlightToCustomerList(flightIndex(flightManager.flightList, f1), numOfTickets);
                             }
                         } else {
                             customer.addNewFlightToCustomerList(f1);
@@ -138,7 +139,7 @@ public class FlightReservation implements DisplayClass {
 
     String flightStatus(Flight flight) {
         boolean isFlightAvailable = false;
-        for (Flight list : flight.getFlightList()) {
+        for (Flight list : flightManager.flightList) {
             if (list.getFlightNumber().equalsIgnoreCase(flight.getFlightNumber())) {
                 isFlightAvailable = true;
                 break;
@@ -197,7 +198,7 @@ public class FlightReservation implements DisplayClass {
     @Override
     public void displayRegisteredUsersForAllFlight() {
         System.out.println();
-        for (Flight flight : flight.getFlightList()) {
+        for (Flight flight : flightManager.flightList) {
             List<Customer> c = flight.getListOfRegisteredCustomersInAFlight();
             int size = flight.getListOfRegisteredCustomersInAFlight().size();
             if (size != 0) {
@@ -219,7 +220,7 @@ public class FlightReservation implements DisplayClass {
     @Override
     public void displayRegisteredUsersForASpecificFlight(String flightNum) {
         System.out.println();
-        for (Flight flight : flight.getFlightList()) {
+        for (Flight flight : flightManager.flightList) {
             List<Customer> c = flight.getListOfRegisteredCustomersInAFlight();
             if (flight.getFlightNumber().equalsIgnoreCase(flightNum)) {
                 displayHeaderForUsers(flight, c);

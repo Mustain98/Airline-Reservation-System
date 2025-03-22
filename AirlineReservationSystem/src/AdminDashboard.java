@@ -4,12 +4,12 @@ import java.util.Scanner;
 public class AdminDashboard {
     private String username;
     private Customer c1;
-    private Flight f1;
+    private FlightManager f1;
     private List<Customer> customersCollection;
     private FlightReservation bookingAndReserving;
     private static final Scanner scanner = new Scanner(System.in);
 
-    public AdminDashboard(String user, Customer c1, Flight f1, List<Customer> customerCollection, FlightReservation bookingAndReserving) {
+    public AdminDashboard(String user, Customer c1, FlightManager f1, List<Customer> customerCollection, FlightReservation bookingAndReserving) {
         this.username = user;
         this.c1 = c1;
         this.f1 = f1;
