@@ -14,7 +14,7 @@ public class CustomerDashboard {
         System.out.printf("%-40s (g) Enter 0 to Go back to the Main Menu/Logout....\n", "");
         System.out.print("Enter the desired Choice :   ");
     }
-    public int getDesiredChoice(int desiredChoice, FlightManager f1, FlightReservation bookingAndReserving, String[] result, Customer c1, String userName) {
+    public int getDesiredChoice(int desiredChoice, FlightManager f1, FlightReservation bookingAndReserving, String[] result, CustomerManager c1, String userName) {
         Scanner read = new Scanner(System.in);
         if (desiredChoice == 1) {
             f1.displayFlightSchedule();
@@ -46,7 +46,7 @@ public class CustomerDashboard {
         return desiredChoice;
     }
 
-    private  void deleteAccount( String[] result, Customer c1, String userName, Scanner read) {
+    private  void deleteAccount( String[] result, CustomerManager c1, String userName, Scanner read) {
         System.out.print(
                 "Are you sure to delete your account...It's an irreversible action...Enter Y/y to confirm...");
         char confirmationChar = read.nextLine().charAt(0);

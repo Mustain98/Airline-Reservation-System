@@ -3,17 +3,15 @@ import java.util.Scanner;
 
 public class AdminDashboard {
     private String username;
-    private Customer c1;
+    private CustomerManager c1;
     private FlightManager f1;
-    private List<Customer> customersCollection;
     private FlightReservation bookingAndReserving;
     private static final Scanner scanner = new Scanner(System.in);
 
-    public AdminDashboard(String user, Customer c1, FlightManager f1, List<Customer> customerCollection, FlightReservation bookingAndReserving) {
+    public AdminDashboard(String user, CustomerManager c1, FlightManager f1, FlightReservation bookingAndReserving) {
         this.username = user;
         this.c1 = c1;
         this.f1 = f1;
-        this.customersCollection = customerCollection;
         this.bookingAndReserving = bookingAndReserving;
     }
 
@@ -68,7 +66,7 @@ public class AdminDashboard {
         c1.displayCustomersData(false);
         System.out.print("Enter Customer ID to update: ");
         String customerID = scanner.nextLine();
-        if (!customersCollection.isEmpty()) {
+        if (!c1.getCustomers().isEmpty()) {
             c1.editUserInfo(customerID);
         } else {
             System.out.println("No customer with ID " + customerID + " found!");
@@ -79,7 +77,7 @@ public class AdminDashboard {
         c1.displayCustomersData(false);
         System.out.print("Enter Customer ID to delete: ");
         String customerID = scanner.nextLine();
-        if (!customersCollection.isEmpty()) {
+        if (!c1.getCustomers().isEmpty()) {
             c1.deleteUser(customerID);
         } else {
             System.out.println("No customer with ID " + customerID + " found!");
