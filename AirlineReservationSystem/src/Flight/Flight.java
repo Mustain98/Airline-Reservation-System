@@ -19,6 +19,7 @@ public class Flight {
     private int numOfSeatsInTheFlight;
     private List<Customer> listOfRegisteredCustomersInAFlight;
     private int customerIndex;
+    int hour = 60;
 
     //        ************************************************************ Behaviours/Methods ************************************************************
 
@@ -75,8 +76,9 @@ public class Flight {
         } else {
             minutes += 5 - modulus;
         }
-        if (minutes >= 60) {
-            minutes -= 60;
+
+        if (minutes >= hour) {
+            minutes -= hour;
             hours++;
         }
         if (hours <= 9 && Integer.toString(minutes).length() == 1) {

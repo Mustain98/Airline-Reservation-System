@@ -20,7 +20,8 @@ public class AdminManager {
         int isFound=-1;
         for(String name:adminUserNameAndPassword.keySet()){
             if(username.equals(name)&&password.equals(adminUserNameAndPassword.get(username))){
-                if(username.equals("root")&&adminUserNameAndPassword.get(username).equals("root")){
+                boolean DefaultUserNameAndPass = username.equals("root") && adminUserNameAndPassword.get(username).equals("root");
+                if(DefaultUserNameAndPass){
                     isFound=0;
                 }
                 else{
