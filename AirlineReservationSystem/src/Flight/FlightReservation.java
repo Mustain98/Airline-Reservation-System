@@ -10,7 +10,7 @@ import Customer.*;
 public class FlightReservation implements DisplayClass {
 
     //        ************************************************************ Fields ************************************************************
-    FlightManager flightManager = new FlightManager();
+    FlightManager flightManager = FlightManager.getInstance();
     CustomerManager customerManager = CustomerManager.getInstance();
     int flightIndexInFlightList;
 

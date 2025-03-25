@@ -13,7 +13,7 @@ public class SystemManager {
     static int countNumOfUsers = 1;
 
     public static void main(String[] args) {
-        FlightManager f1 = new FlightManager();
+        FlightManager f1 = FlightManager.getInstance();
         FlightReservation bookingAndReserving = new FlightReservation();
         CustomerManager c1 = CustomerManager.getInstance();
         AdminManager am1 = new AdminManager();

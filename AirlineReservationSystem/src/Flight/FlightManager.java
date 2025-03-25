@@ -7,10 +7,17 @@ public class FlightManager {
 
     private FlightScheduler flightScheduler;
     public List<Flight> flightList;
+    public static FlightManager instance;
 
-    public FlightManager() {
+    private FlightManager() {
         this.flightScheduler = FlightScheduler.getInstance();
         this.flightList = flightScheduler.generateFlightSchedule();
+    }
+    public static synchronized FlightManager getInstance(){
+        if(instance==null){
+            instance = new FlightManager();
+        }
+        return instance;
     }
 
     public void deleteFlight(String flightNumber) {
