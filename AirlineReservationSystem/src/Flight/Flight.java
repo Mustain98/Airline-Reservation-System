@@ -1,8 +1,7 @@
-import java.time.Instant;
+package Flight;
+import Customer.*;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class Flight {
@@ -101,7 +100,7 @@ public class Flight {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy, HH:mm a ");
         LocalDateTime departureDateTime = LocalDateTime.parse(flightSchedule, formatter);
 
-        /*Getting the Flight Time, plane was in air*/
+        /*Getting the Flight.Flight Time, plane was in air*/
         String[] flightTime = getFlightTime().split(":");
         int hours = Integer.parseInt(flightTime[0]);
         int minutes = Integer.parseInt(flightTime[1]);

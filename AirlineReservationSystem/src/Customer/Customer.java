@@ -1,3 +1,8 @@
+package Customer;
+
+import Flight.Flight;
+import Utility.RandomGenerator;
+
 import java.util.*;
 
 public class Customer {
@@ -37,7 +42,7 @@ public class Customer {
                 randomIDDisplay(userID), name, age, email, address, phone);
     }
 
-    String randomIDDisplay(String randomID) {
+    public String randomIDDisplay(String randomID) {
         StringBuilder newString = new StringBuilder();
         for (int i = 0; i <= randomID.length(); i++) {
             if (i == 3) {
@@ -49,11 +54,11 @@ public class Customer {
         return newString.toString();
     }
 
-    void addExistingFlightToCustomerList(int index, int numOfTickets) {
+    public void addExistingFlightToCustomerList(int index, int numOfTickets) {
         int newNumOfTickets = numOfTicketsBookedByUser.get(index) + numOfTickets;
         this.numOfTicketsBookedByUser.set(index, newNumOfTickets);
     }
-    void addNewFlightToCustomerList(Flight f) {
+    public void addNewFlightToCustomerList(Flight f) {
         this.flightsRegisteredByUser.add(f);
         // numOfFlights++;
     }

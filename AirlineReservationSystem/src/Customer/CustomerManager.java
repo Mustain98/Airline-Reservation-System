@@ -1,15 +1,25 @@
+package Customer;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
 public class CustomerManager {
-    private  List<Customer>customerCollection;
-    public CustomerManager() {
+    public List<Customer>customerCollection;
+    public static CustomerManager instance;
+
+    private CustomerManager() {
         customerCollection = new ArrayList<>();
     }
+    public static synchronized CustomerManager getInstance() {
+        if (instance == null) {
+            instance = new CustomerManager();
+        }
+        return instance;
+    }
     public void addNewCustomer() {
-        System.out.printf("\n\n\n%60s ++++++++++++++ Welcome to the Customer Registration Portal ++++++++++++++", "");
+        System.out.printf("\n\n\n%60s ++++++++++++++ Welcome to the Customer.Customer Registration Portal ++++++++++++++", "");
         Scanner read = new Scanner(System.in);
         System.out.print("\nEnter your name :\t");
         String name = read.nextLine();
@@ -59,7 +69,7 @@ public class CustomerManager {
                     "%10s+------------+------------+----------------------------------+---------+-----------------------------+-------------------------------------+-------------------------+\n",
                     "");
         } else {
-            System.out.printf("%-50sNo Customer with the ID %s Found...!!!\n", " ", ID);
+            System.out.printf("%-50sNo Customer.Customer with the ID %s Found...!!!\n", " ", ID);
         }
     }
     public void displayCustomersData(boolean showHeader) {
@@ -101,11 +111,11 @@ public class CustomerManager {
         }
         if (isFound) {
             iterator.remove();
-            System.out.printf("\n%-50sPrinting all  Customer's Data after deleting Customer with the ID %s.....!!!!\n",
+            System.out.printf("\n%-50sPrinting all  Customer.Customer's Data after deleting Customer.Customer with the ID %s.....!!!!\n",
                     "", ID);
             displayCustomersData(false);
         } else {
-            System.out.printf("%-50sNo Customer with the ID %s Found...!!!\n", " ", ID);
+            System.out.printf("%-50sNo Customer.Customer with the ID %s Found...!!!\n", " ", ID);
         }
     }
     public void editUserInfo(String ID) {
@@ -130,7 +140,7 @@ public class CustomerManager {
             }
         }
         if (!isFound) {
-            System.out.printf("%-50sNo Customer with the ID %s Found...!!!\n", " ", ID);
+            System.out.printf("%-50sNo Customer.Customer with the ID %s Found...!!!\n", " ", ID);
         }
     }
     public String isPassengerRegistered(String email, String password) {

@@ -1,19 +1,17 @@
-/*
- * FlightReservation class allows the user to book, cancel and check the status of the registered flights.
- *
- *
- * */
+package Flight;
+import Utility.*;
 
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
+import Customer.*;
 
 public class FlightReservation implements DisplayClass {
 
     //        ************************************************************ Fields ************************************************************
     FlightManager flightManager = new FlightManager();
-    CustomerManager customerManager = new CustomerManager();
+    CustomerManager customerManager = CustomerManager.getInstance();
     int flightIndexInFlightList;
 
     //        ************************************************************ Behaviours/Methods ************************************************************
@@ -29,11 +27,11 @@ public class FlightReservation implements DisplayClass {
      * @param numOfTickets number of tickets to be booked
      * @param userID       userID of the user which is booking the flight
      */
-    void bookFlight(String flightNo, int numOfTickets, String userID) {
+    public void bookFlight(String flightNo, int numOfTickets, String userID) {
         boolean isFound = false;
         for (Flight f1 : flightManager.flightList) {
             if (flightNo.equalsIgnoreCase(f1.getFlightNumber())) {
-                for (Customer customer :customerManager.getCustomers()) {
+                for (Customer customer : customerManager.getCustomers()) {
                     if (userID.equals(customer.getUserID())) {
                         isFound = true;
                         f1.setNoOfSeatsInTheFlight(f1.getNoOfSeats() - numOfTickets);
@@ -42,33 +40,31 @@ public class FlightReservation implements DisplayClass {
                         }
                         if (isFlightAlreadyAddedToCustomerList(customer.flightsRegisteredByUser, f1)) {
                             addNumberOfTicketsToAlreadyBookedFlight(customer, numOfTickets);
-                            List<Flight> flightList = flightManager.flightList;
-                            if (flightIndex(flightList, f1) != -1) {
+                            if (flightIndex(flightManager.flightList, f1) != -1) {
                                 customer.addExistingFlightToCustomerList(flightIndex(flightManager.flightList, f1), numOfTickets);
                             }
                         } else {
                             customer.addNewFlightToCustomerList(f1);
                             addNumberOfTicketsForNewFlight(customer, numOfTickets);
                         }
-                    break;
+                        break;
                     }
                 }
             }
         }
         if (!isFound) {
-            System.out.println("Invalid Flight Number...! No flight with the  ID \"" + flightNo + "\" was found...");
+            System.out.println("Invalid Flight.Flight Number or User ID...!");
         } else {
-            System.out.printf("\n %50s You've booked %d tickets for Flight \"%5s\"...", "", numOfTickets, flightNo.toUpperCase());
+            System.out.printf("\n %50s You've booked %d tickets for Flight.Flight \"%5s\"...", "", numOfTickets, flightNo.toUpperCase());
         }
     }
-
     /**
      * Cancels the flight for a particular user and return/add the numOfTickets back to
      * the main flight scheduler.
      *
      * @param userID    ID of the user for whom the flight is to be cancelled
      */
-    void cancelFlight(String userID) {
+    public void cancelFlight(String userID) {
         String flightNum = "";
         Scanner read = new Scanner(System.in);
         int index = 0, ticketsToBeReturned;
@@ -78,7 +74,7 @@ public class FlightReservation implements DisplayClass {
                 if (customer.getFlightsRegisteredByUser().size() != 0) {
                     System.out.printf("%50s %s Here is the list of all the Flights registered by you %s", " ", "++++++++++++++", "++++++++++++++");
                     displayFlightsRegisteredByOneUser(userID);
-                    System.out.print("Enter the Flight Number of the Flight you want to cancel : ");
+                    System.out.print("Enter the Flight.Flight Number of the Flight.Flight you want to cancel : ");
                     flightNum = read.nextLine();
                     System.out.print("Enter the number of tickets to cancel : ");
                     int numOfTickets = read.nextInt();
@@ -107,11 +103,11 @@ public class FlightReservation implements DisplayClass {
                     }
 
                 }else{
-                    System.out.println("No Flight Has been Registered by you with ID \"\"" + flightNum.toUpperCase() +"\"\".....");
+                    System.out.println("No Flight.Flight Has been Registered by you with ID \"\"" + flightNum.toUpperCase() +"\"\".....");
                 }
 //                index++;
                 if (!isFound) {
-                    System.out.println("ERROR!!! Couldn't find Flight with ID \"" + flightNum.toUpperCase() + "\".....");
+                    System.out.println("ERROR!!! Couldn't find Flight.Flight with ID \"" + flightNum.toUpperCase() + "\".....");
                 }
             }
         }
@@ -185,7 +181,7 @@ public class FlightReservation implements DisplayClass {
 
     @Override
     public void displayHeaderForUsers(Flight flight, List<Customer> c) {
-        System.out.printf("\n%65s Displaying Registered Customers for Flight No. \"%-6s\" %s \n\n", "+++++++++++++", flight.getFlightNumber(), "+++++++++++++");
+        System.out.printf("\n%65s Displaying Registered Customers for Flight.Flight No. \"%-6s\" %s \n\n", "+++++++++++++", flight.getFlightNumber(), "+++++++++++++");
         System.out.printf("%10s+------------+------------+----------------------------------+---------+-----------------------------+-------------------------------------+-------------------------+----------------+\n", "");
         System.out.printf("%10s| SerialNum  |   UserID   | Passenger Names                  | Age     | EmailID\t\t       | Home Address\t\t\t     | Phone Number\t       | Booked Tickets |%n", "");
         System.out.printf("%10s+------------+------------+----------------------------------+---------+-----------------------------+-------------------------------------+-------------------------+----------------+\n", "");

@@ -1,3 +1,8 @@
+package Utility;
+
+import Customer.Customer;
+import Flight.Flight;
+
 import java.util.List;
 
 public interface DisplayClass {

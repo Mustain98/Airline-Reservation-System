@@ -1,3 +1,8 @@
+package Main;
+
+import Customer.CustomerManager;
+import Flight.*;
+
 import java.util.Scanner;
 
 public class CustomerDashboard {

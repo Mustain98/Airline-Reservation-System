@@ -1,4 +1,9 @@
-import java.util.List;
+package Main;
+
+import Customer.CustomerManager;
+import Flight.FlightManager;
+import Flight.FlightReservation;
+
 import java.util.Scanner;
 
 public class AdminDashboard {
@@ -25,9 +30,9 @@ public class AdminDashboard {
         System.out.printf("%-30s (e) Enter 5 to Display all Passengers....\n", "");
         System.out.printf("%-30s (f) Enter 6 to Display all flights registered by a Passenger...\n",
                 "");
-        System.out.printf("%-30s (g) Enter 7 to Display all registered Passengers in a Flight....\n",
+        System.out.printf("%-30s (g) Enter 7 to Display all registered Passengers in a Flight.Flight....\n",
                 "");
-        System.out.printf("%-30s (h) Enter 8 to Delete a Flight....\n", "");
+        System.out.printf("%-30s (h) Enter 8 to Delete a Flight.Flight....\n", "");
         System.out.printf("%-30s (i) Enter 0 to Go back to the Main Menu/Logout....\n", "");
         System.out.print("Enter the desired Choice :   ");
     }
@@ -57,14 +62,14 @@ public class AdminDashboard {
 
     private void searchPassenger() {
         c1.displayCustomersData(false);
-        System.out.print("Enter Customer ID: ");
+        System.out.print("Enter Customer.Customer ID: ");
         String customerID = scanner.nextLine();
         c1.searchUser(customerID);
     }
 
     private void updatePassenger() {
         c1.displayCustomersData(false);
-        System.out.print("Enter Customer ID to update: ");
+        System.out.print("Enter Customer.Customer ID to update: ");
         String customerID = scanner.nextLine();
         if (!c1.getCustomers().isEmpty()) {
             c1.editUserInfo(customerID);
@@ -75,7 +80,7 @@ public class AdminDashboard {
 
     private void deletePassenger() {
         c1.displayCustomersData(false);
-        System.out.print("Enter Customer ID to delete: ");
+        System.out.print("Enter Customer.Customer ID to delete: ");
         String customerID = scanner.nextLine();
         if (!c1.getCustomers().isEmpty()) {
             c1.deleteUser(customerID);
@@ -98,7 +103,7 @@ public class AdminDashboard {
             bookingAndReserving.displayRegisteredUsersForAllFlight();
         } else if (choice =='n') {
             f1.displayFlightSchedule();
-            System.out.print("Enter Flight Number: ");
+            System.out.print("Enter Flight.Flight Number: ");
             String flightNum = scanner.nextLine();
             bookingAndReserving.displayRegisteredUsersForASpecificFlight(flightNum);
         } else {
@@ -108,7 +113,7 @@ public class AdminDashboard {
 
     private void deleteFlight() {
         f1.displayFlightSchedule();
-        System.out.print("Enter Flight Number to delete: ");
+        System.out.print("Enter Flight.Flight Number to delete: ");
         String flightNum = scanner.nextLine();
         f1.deleteFlight(flightNum);
     }

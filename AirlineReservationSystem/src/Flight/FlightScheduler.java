@@ -1,3 +1,5 @@
+package Flight;
+import Utility.*;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -9,12 +11,21 @@ import java.util.Date;
 import java.util.List;
 
 public class FlightScheduler {
-
+    private static FlightScheduler instance;
     private static int nextFlightDay = 0;
     private final List<Flight> flightList = new ArrayList<>();
 
+    private FlightScheduler(){
+
+    }
+    public static synchronized FlightScheduler getInstance() {
+        if (instance == null) {
+            instance = new FlightScheduler();
+        }
+        return instance;
+    }
     public List<Flight> generateFlightSchedule() {
-        int numOfFlights = 15; // Number of flights to generate
+        int numOfFlights = 15;
         RandomGenerator r1 = new RandomGenerator();
         for (int i = 0; i < numOfFlights; i++) {
             String[][] chosenDestinations = r1.randomDestinations();

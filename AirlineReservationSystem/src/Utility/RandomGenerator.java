@@ -1,3 +1,5 @@
+package Utility;
+
 import java.util.Random;
 
 public class RandomGenerator {
@@ -77,7 +79,7 @@ public class RandomGenerator {
         return numOfSeats;
     }
 
-    /*Generates the Unique Flight Number....*/
+    /*Generates the Unique Flight.Flight Number....*/
     public String randomFlightNumbGen(int uptoHowManyLettersRequired, int divisible) {
         Random random = new Random();
         StringBuilder randomAlphabets = new StringBuilder();
