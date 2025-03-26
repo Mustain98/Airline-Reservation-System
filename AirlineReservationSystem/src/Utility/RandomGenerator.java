@@ -1,8 +1,15 @@
+package Utility;
+
 import java.util.Random;
 
 public class RandomGenerator {
 
     //        ************************************************************ Fields ************************************************************
+    private final int min_seat=75;
+    private final int max_seat=500;
+    private final int min_id=20000;
+    private final int max_id=1000000;
+    private final int alphabetNum=26;
 
     private String randomNum;
     /*  City name is at the 0-index, its latitude is on the 1-index and longitude on the 2-index*/
@@ -30,10 +37,10 @@ public class RandomGenerator {
     /* Generates Random ID for the Customers....*/
     public void randomIDGen() {
         Random rand = new Random();
-        String randomID = Integer.toString(rand.nextInt(1000000));
+        String randomID = Integer.toString(rand.nextInt(max_id));
 
-        while (Integer.parseInt(randomID) < 20000) {
-            randomID = Integer.toString(rand.nextInt(1000000));
+        while (Integer.parseInt(randomID) < min_id) {
+            randomID = Integer.toString(rand.nextInt(max_id));
         }
         setRandomNum(randomID);
     }
@@ -65,19 +72,19 @@ public class RandomGenerator {
     /*Generates the Random Number of Seats for each flight*/
     public int randomNumOfSeats() {
         Random random = new Random();
-        int numOfSeats = random.nextInt(500);
-        while (numOfSeats < 75) {
-            numOfSeats = random.nextInt(500);
+        int numOfSeats = random.nextInt(max_seat);
+        while (numOfSeats < min_seat) {
+            numOfSeats = random.nextInt(max_seat);
         }
         return numOfSeats;
     }
 
-    /*Generates the Unique Flight Number....*/
+    /*Generates the Unique Flight.Flight Number....*/
     public String randomFlightNumbGen(int uptoHowManyLettersRequired, int divisible) {
         Random random = new Random();
         StringBuilder randomAlphabets = new StringBuilder();
         for (int i = 0; i < uptoHowManyLettersRequired; i++) {
-            randomAlphabets.append((char) (random.nextInt(26) + 'a'));
+            randomAlphabets.append((char) (random.nextInt(alphabetNum) + 'a'));
         }
         randomAlphabets.append("-").append(randomNumOfSeats() / divisible);
         return randomAlphabets.toString();
